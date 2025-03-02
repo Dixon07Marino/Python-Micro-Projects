@@ -25,12 +25,9 @@ class Tasks:
     
     def read_task(self):
         print(f'Task: {tasks[self.id_task]}')
-        #DONE
 
     def update_task(self):
         tasks.update({self.id_task: self.task})
-        # self.done = True
-        #DONE
 
     def delete_task(self):
         tasks.pop(self.id_task)
@@ -46,7 +43,8 @@ while True:
         if choice == 'Crear':
             number_task += 1
             task_is = input(f'Crea tu tarea: ').strip().title()
-            task = Tasks(number_task, task_is)
+            lista = [task_is, False]
+            task = Tasks(number_task, lista)
             task.create_task()
             print(tasks)
         elif choice == 'Visualizar':
@@ -55,9 +53,13 @@ while True:
             task.read_task()
         elif choice == 'Actualizar':
             find_task = int(input('Ingresa el ID de la tarea que quieres actualizar: '))
+            action = int(input(f'Coloca 1, si quieres reemplazar la tarea\ny 2 si quieres cambiar el estado de la tarea: '))
             task.id_task = find_task
-            task_is = input(f'Nueva tarea: ').strip().title()
-            task.task = task_is
+            if action == 1:
+                task_is = input(f'Nueva tarea: ').strip().title()
+                task.task[0] = task_is
+            elif action == 2:
+                task.task[1] = True
             task.update_task()
         elif choice == 'Eliminar':
             find_task = int(input('Ingresa el ID de la tarea que quieres eliminar: '))
@@ -73,28 +75,3 @@ print(tasks)
 #Ingresar datos al JSON
 with open('tasks.json', mode='w') as tasks_file:
     json.dump(tasks, tasks_file, indent=2)
-
-
-"""
-{
-
-"1": {
-    "Task": "Comer"
-    "DONE": True
-},
-"2": {
-    "Task": "Comer"
-    "DONE": False
-},
-"3": {
-    "Task": "Comer"
-    "DONE": True
-}
-
-#Posible solución
-
-"4": ["comer", True]
-
-}
-
-"""
